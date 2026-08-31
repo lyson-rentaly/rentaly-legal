@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réinitialisation du mot de passe — Rentaly</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">Rentaly</a>
+
+    <nav class="legal-nav">
+      <a href="/confidentialite/">Confidentialité</a>
+      <a href="/conditions-utilisation/">CGU</a>
+      <a href="/mentions-legales/">Mentions légales</a>
+      <a href="/support/">Support</a>
+      <a href="/suppression-compte/">Suppression de compte</a>
+    </nav>
+
+  </div>
+</header>
+<main class="wrap">
+  <h1>Réinitialisation du mot de passe</h1>
+
+  <div id="missing-token" class="card" hidden>
+    <p>Ce lien de réinitialisation est invalide : aucun jeton n'a été trouvé dans l'adresse.</p>
+    <p>Relancez une demande depuis l'application Rentaly, dans l'écran de connexion.</p>
+  </div>
+
+  <form id="reset-form" class="card">
+    <p>Choisissez un nouveau mot de passe pour votre compte Rentaly.</p>
+
+    <div class="field">
+      <label for="new-password">Nouveau mot de passe</label>
+      <input type="password" id="new-password" name="new-password" minlength="12" maxlength="128" required autocomplete="new-password">
+    </div>
+
+    <div class="field">
+      <label for="confirm-password">Confirmer le mot de passe</label>
+      <input type="password" id="confirm-password" name="confirm-password" minlength="12" maxlength="128" required autocomplete="new-password">
+    </div>
+
+    <p class="hint">Au moins 12 caractères.</p>
+
+    <button type="submit" class="btn" id="submit-button">Réinitialiser le mot de passe</button>
+
+    <p id="form-message" class="form-message" role="status" hidden></p>
+  </form>
+
+  <div id="success" class="card" hidden>
+    <p>Votre mot de passe a été réinitialisé avec succès.</p>
+    <p>Vous pouvez maintenant retourner dans l'application Rentaly et vous connecter avec votre nouveau mot de passe.</p>
+  </div>
+
+  <footer class="site">
+    &copy; 2026 Rentaly — Malik Talbi. Contact : <a href="mailto:contact.rentaly@gmail.com">contact.rentaly@gmail.com</a>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var API_BASE_URL = "https://rentaly-api-ct5c.onrender.com";
+
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get("token");
+
+  var form = document.getElementById("reset-form");
+  var missingTokenBox = document.getElementById("missing-token");
+  var successBox = document.getElementById("success");
+  var messageBox = document.getElementById("form-message");
+  var submitButton = document.getElementById("submit-button");
+
+  if (!token) {
+    form.hidden = true;
+    missingTokenBox.hidden = false;
+    return;
+  }
+
+  function showMessage(text) {
+    messageBox.textContent = text;
+    messageBox.hidden = false;
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var newPassword = document.getElementById("new-password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+
+    if (newPassword.length < 12) {
+      showMessage("Le mot de passe doit contenir au moins 12 caractères.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      showMessage("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
+
+    submitButton.disabled = true;
+    messageBox.hidden = true;
+
+    fetch(API_BASE_URL + "/v1/auth/password/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token, new_password: newPassword }),
+    })
+      .then(function (response) {
+        if (response.ok) {
+          form.hidden = true;
+          successBox.hidden = false;
+          return;
+        }
+        if (response.status === 400) {
+          showMessage(
+            "Ce lien de réinitialisation est invalide, expiré, ou déjà utilisé. Relancez une demande depuis l'application."
+          );
+          return;
+        }
+        showMessage("Une erreur est survenue. Réessayez dans quelques instants.");
+      })
+      .catch(function () {
+        showMessage("Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.");
+      })
+      .finally(function () {
+        submitButton.disabled = false;
+      });
+  });
+})();
+</script>
+</body>
+</html>
