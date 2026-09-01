@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Réinitialisation du mot de passe — Rentaly</title>
 <link rel="stylesheet" href="/style.css">
+<script src="/reset-password/config.js"></script>
 </head>
 <body>
 <header class="site">
@@ -61,7 +62,7 @@
 
 <script>
 (function () {
-  var API_BASE_URL = "https://rentaly-api-ct5c.onrender.com";
+  var API_BASE_URL = window.RENTALY_API_BASE_URL;
 
   var params = new URLSearchParams(window.location.search);
   var token = params.get("token");
