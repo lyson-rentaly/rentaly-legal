@@ -1,4 +1,4 @@
 // Rendwell API base URL used by this page's reset-password script.
 // Kept in a single dedicated file so the production value is easy to find
 // and update without touching the page logic.
-window.RENDWELL_API_BASE_URL = "https://api.rendeasy.fr";
+window.RENDWELL_API_BASE_URL = "https://api.rendwell.fr";
