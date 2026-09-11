@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Réinitialisation du mot de passe — Rentaly</title>
+<title>Réinitialisation du mot de passe — Rendwell</title>
 <link rel="stylesheet" href="/style.css">
 <script src="/reset-password/config.js"></script>
 </head>
 <body>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="/">Rentaly</a>
+    <a class="brand" href="/">Rendwell</a>
 
     <nav class="legal-nav">
       <a href="/confidentialite/">Confidentialité</a>
@@ -27,11 +27,11 @@
 
   <div id="missing-token" class="card" hidden>
     <p>Ce lien de réinitialisation est invalide : aucun jeton n'a été trouvé dans l'adresse.</p>
-    <p>Relancez une demande depuis l'application Rentaly, dans l'écran de connexion.</p>
+    <p>Relancez une demande depuis l'application Rendwell, dans l'écran de connexion.</p>
   </div>
 
   <form id="reset-form" class="card">
-    <p>Choisissez un nouveau mot de passe pour votre compte Rentaly.</p>
+    <p>Choisissez un nouveau mot de passe pour votre compte Rendwell.</p>
 
     <div class="field">
       <label for="new-password">Nouveau mot de passe</label>
@@ -52,17 +52,17 @@
 
   <div id="success" class="card" hidden>
     <p>Votre mot de passe a été réinitialisé avec succès.</p>
-    <p>Vous pouvez maintenant retourner dans l'application Rentaly et vous connecter avec votre nouveau mot de passe.</p>
+    <p>Vous pouvez maintenant retourner dans l'application Rendwell et vous connecter avec votre nouveau mot de passe.</p>
   </div>
 
   <footer class="site">
-    &copy; 2026 Rentaly — Malik Talbi. Contact : <a href="mailto:contact.rentaly@gmail.com">contact.rentaly@gmail.com</a>
+    &copy; 2026 Rendwell — Malik Talbi. Contact : <a href="mailto:contact@rendwell.fr">contact@rendwell.fr</a>
   </footer>
 </main>
 
 <script>
 (function () {
-  var API_BASE_URL = window.RENTALY_API_BASE_URL;
+  var API_BASE_URL = window.RENDWELL_API_BASE_URL;
 
   var params = new URLSearchParams(window.location.search);
   var token = params.get("token");
