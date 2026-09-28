@@ -35,15 +35,18 @@
 
     <div class="field">
       <label for="new-password">Nouveau mot de passe</label>
-      <input type="password" id="new-password" name="new-password" minlength="12" maxlength="128" required autocomplete="new-password">
+      <input type="password" id="new-password" name="new-password" minlength="12" maxlength="128" required autocomplete="new-password" aria-describedby="password-hint">
     </div>
+
+    <p class="hint" id="password-hint">
+      <span id="password-length" aria-live="polite">0 / 12 caractères</span><br>
+      Astuce : une phrase de plusieurs mots est plus facile à retenir et plus sûre.
+    </p>
 
     <div class="field">
       <label for="confirm-password">Confirmer le mot de passe</label>
       <input type="password" id="confirm-password" name="confirm-password" minlength="12" maxlength="128" required autocomplete="new-password">
     </div>
-
-    <p class="hint">Au moins 12 caractères.</p>
 
     <button type="submit" class="btn" id="submit-button">Réinitialiser le mot de passe</button>
 
@@ -63,6 +66,19 @@
 <script>
 (function () {
   var API_BASE_URL = window.RENDWELL_API_BASE_URL;
+  // Must match PASSWORD_MIN_LENGTH in the Rendwell API; the API remains the
+  // source of truth and also rejects common passwords.
+  var MIN_PASSWORD_LENGTH = 12;
+
+  // Stable reasons returned by the API as `detail` on HTTP 422 when the new
+  // password is too easy to guess. The reset link stays valid after them.
+  var WEAK_PASSWORD_MESSAGES = {
+    password_too_common:
+      "Ce mot de passe est trop courant ou trop facile à deviner. Choisissez-en un autre.",
+    password_contains_email:
+      "Votre mot de passe ne doit pas contenir votre adresse email. Choisissez-en un autre.",
+  };
+  var INVALID_PASSWORD_MESSAGE = "Ce mot de passe n'est pas valide. Choisissez-en un autre.";
 
   var params = new URLSearchParams(window.location.search);
   var token = params.get("token");
@@ -72,6 +88,8 @@
   var successBox = document.getElementById("success");
   var messageBox = document.getElementById("form-message");
   var submitButton = document.getElementById("submit-button");
+  var newPasswordInput = document.getElementById("new-password");
+  var passwordLength = document.getElementById("password-length");
 
   if (!token) {
     form.hidden = true;
@@ -84,14 +102,41 @@
     messageBox.hidden = false;
   }
 
+  function updatePasswordLength() {
+    var length = newPasswordInput.value.length;
+    passwordLength.textContent =
+      length >= MIN_PASSWORD_LENGTH
+        ? length + " caractères ✓"
+        : length + " / " + MIN_PASSWORD_LENGTH + " caractères";
+  }
+
+  // Only a plain string `detail` is a weak-password reason; a list means the
+  // request itself was invalid (FastAPI validation errors).
+  function showInvalidPasswordMessage(response) {
+    return response
+      .json()
+      .then(function (body) {
+        var detail = body && typeof body.detail === "string" ? body.detail : null;
+        showMessage(WEAK_PASSWORD_MESSAGES[detail] || INVALID_PASSWORD_MESSAGE);
+      })
+      .catch(function () {
+        showMessage(INVALID_PASSWORD_MESSAGE);
+      });
+  }
+
+  newPasswordInput.addEventListener("input", updatePasswordLength);
+  updatePasswordLength();
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    var newPassword = document.getElementById("new-password").value;
+    var newPassword = newPasswordInput.value;
     var confirmPassword = document.getElementById("confirm-password").value;
 
-    if (newPassword.length < 12) {
-      showMessage("Le mot de passe doit contenir au moins 12 caractères.");
+    if (newPassword.length < MIN_PASSWORD_LENGTH) {
+      showMessage(
+        "Le mot de passe doit contenir au moins " + MIN_PASSWORD_LENGTH + " caractères."
+      );
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -118,6 +163,9 @@
             "Ce lien de réinitialisation est invalide, expiré, ou déjà utilisé. Relancez une demande depuis l'application."
           );
           return;
+        }
+        if (response.status === 422) {
+          return showInvalidPasswordMessage(response);
         }
         showMessage("Une erreur est survenue. Réessayez dans quelques instants.");
       })
