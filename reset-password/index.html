@@ -4,27 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Réinitialisation du mot de passe — Rendwell</title>
+<link rel="stylesheet" href="/tokens.css">
 <link rel="stylesheet" href="/style.css">
 <script src="/reset-password/config.js"></script>
 </head>
 <body>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="/">Rendwell</a>
-
-    <nav class="legal-nav">
-      <a href="/confidentialite/">Confidentialité</a>
-      <a href="/conditions-utilisation/">CGU</a>
-      <a href="/mentions-legales/">Mentions légales</a>
-      <a href="/support/">Support</a>
-      <a href="/suppression-compte/">Suppression de compte</a>
-    </nav>
-
+    <a class="brand" href="/">
+      <img src="/assets/rendwell-logo.png" alt="" width="44" height="44">
+      Rendwell
+    </a>
+    <h1>Réinitialisation du mot de passe</h1>
   </div>
 </header>
+<nav class="legal-nav" aria-label="Pages du site">
+  <div class="wrap">
+    <a href="/confidentialite/">Confidentialité</a>
+    <a href="/conditions-utilisation/">CGU</a>
+    <a href="/mentions-legales/">Mentions légales</a>
+    <a href="/support/">Support</a>
+    <a href="/suppression-compte/">Suppression de compte</a>
+  </div>
+</nav>
 <main class="wrap">
-  <h1>Réinitialisation du mot de passe</h1>
-
   <div id="missing-token" class="card" hidden>
     <p>Ce lien de réinitialisation est invalide : aucun jeton n'a été trouvé dans l'adresse.</p>
     <p>Relancez une demande depuis l'application Rendwell, dans l'écran de connexion.</p>
@@ -36,12 +39,11 @@
     <div class="field">
       <label for="new-password">Nouveau mot de passe</label>
       <input type="password" id="new-password" name="new-password" minlength="12" maxlength="128" required autocomplete="new-password" aria-describedby="password-hint">
+      <p class="hint" id="password-hint">
+        <span id="password-length" aria-live="polite">0 / 12 caractères</span><br>
+        Astuce : une phrase de plusieurs mots est plus facile à retenir et plus sûre.
+      </p>
     </div>
-
-    <p class="hint" id="password-hint">
-      <span id="password-length" aria-live="polite">0 / 12 caractères</span><br>
-      Astuce : une phrase de plusieurs mots est plus facile à retenir et plus sûre.
-    </p>
 
     <div class="field">
       <label for="confirm-password">Confirmer le mot de passe</label>
