@@ -1,0 +1,96 @@
+/*
+ * Rendwell design tokens for the web.
+ *
+ * Mirrors tokens.json, which mirrors mobile/src/constants/theme.ts. The mobile
+ * theme is what the app runs on: when a value changes there, update tokens.json
+ * and this file in the same change.
+ */
+
+@font-face {
+  font-family: "Lora";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/Lora_600SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/PlusJakartaSans_400Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/PlusJakartaSans_500Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/PlusJakartaSans_700Bold.ttf") format("truetype");
+}
+
+:root {
+  /* Colors */
+  --orange100: #ffb25c;
+  --orange500: #ff7a18;
+  --orange700: #d94f04;
+  --orangeBg: #ffeedc;
+  --ink900: #241c15;
+  --ink600: #726a5c;
+  --ink400: #a79c8b;
+  --cream50: #fff8f0;
+  --white: #fffdfa;
+  --line: #f0e4d6;
+  --neutralBg: #f5efe6;
+  --success: #1d8a5e;
+  --successBg: #e7f5ee;
+  --danger: #d64545;
+  --dangerBg: #fbeaea;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-xxl: 24px;
+  --space-xxxl: 32px;
+
+  /* Radius */
+  --radius-sm: 9px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 6px 14px rgba(36, 28, 21, 0.06);
+  --shadow-bar: 0 -4px 12px rgba(36, 28, 21, 0.08);
+  --shadow-pill-active: 0 4px 10px rgba(217, 79, 4, 0.28);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(to bottom right, #ffc46b, #ff7a18, #d94f04);
+  --gradient-pill: linear-gradient(to bottom right, #ff9a3d, #e85d0c);
+
+  /* Font families */
+  --font-display: "Lora", Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Type styles: one class per style of theme.ts `typography`. */
+.rw-text-display { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 600; }
+.rw-text-h1 { font-family: var(--font-display); font-size: 20px; line-height: 26px; font-weight: 600; }
+.rw-text-h2 { font-family: var(--font-display); font-size: 17px; line-height: 22px; font-weight: 600; }
+.rw-text-bodyLg { font-family: var(--font-sans); font-size: 15px; line-height: 22px; font-weight: 500; }
+.rw-text-body { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }
+.rw-text-label { font-family: var(--font-sans); font-size: 12.5px; line-height: 16px; font-weight: 700; }
+.rw-text-caption { font-family: var(--font-sans); font-size: 11.5px; line-height: 16px; font-weight: 500; }
+.rw-text-overline { font-family: var(--font-sans); font-size: 10.5px; line-height: 14px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
